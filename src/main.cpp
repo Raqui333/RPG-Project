@@ -1,37 +1,30 @@
-#include <iostream>
-#include <map>
-#include "../include/entity.h"
+#include "../include/rpg.h"
+#include "../include/enemies.h"
 
-std::map<std::string, std::string> color {
-	{"reset" , "\e[00m"  },
-	{"red"   , "\e[1;31m"},
-	{"green" , "\e[1;32m"},
-	{"yellow", "\e[1;33m"},
-	{"blue"  , "\e[1;34m"},
-	{"purple", "\e[1;35m"},
-	{"cyan"  , "\e[1;36m"},
-	{"white" , "\e[1;37m"},
-};
-
-// player
-Player player("raqui", "knight");
-
-// enemies
-Enemies dragon("dragon", 1000, 1000);
-Enemies goblin("goblin", 50, 50);
-
-void clear() { std::cout << "\e[2J\e[H";};
-
-void hud_player() {
-	std::cout << color["red"] << "[" << player.type() << "] " << color["white"];
-	std::cout << player.name() << "(" <<  player.lv() << ")" << color["reset"] << "  |  ";
-	std::cout << color["green"] << "HP: " << player.hp() << color["reset"] << ", ";
-	std::cout << color["blue"] << "MP: " << player.mp() << color["reset"] << "\n\n";
-}
+rpg::Player rpg::player("Raqui", "Knight");
 
 int main() {
-	clear();
-	hud_player();
+	std::string aws;
+
+	while(1) {
+		rpg::clear();
+		std::cout << rpg::color["yellow"] << "Class ..: " << rpg::color["reset"]  << rpg::player.type() << "\n";
+		std::cout << rpg::color["yellow"] << "Name ...: " << rpg::color["reset"]  << rpg::player.name();
+		std::cout << " (" << rpg::win_lose.first << "/"   << rpg::win_lose.second << ")\n";
+		std::cout << rpg::color["yellow"] << "Level ..: " << rpg::color["reset"]  << rpg::player.lv() << "\n";
+		std::cout << rpg::color["yellow"] << "Status .: " << rpg::color["reset"]  << "HP " << rpg::player.hp() << ", ";
+		std::cout << "MP " << rpg::player.mp() << "\n";
+
+		std::cout << "\nActions\n[1] Battle, [0] Exit\n";
+		std::cout << "> ";
+		std::cin >> aws;
+
+		if(aws == "1") {
+			rpg::battle(rpg::goblin);
+		} else if (aws == "0" || aws == "q") {
+			exit(0);
+		}
+	}
 
 	return 0;
 }
