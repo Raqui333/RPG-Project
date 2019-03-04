@@ -7,7 +7,6 @@ std::map<std::string, std::string> rpg::color {
 	{"yellow", "\e[1;33m"},
 	{"blue"  , "\e[1;34m"},
 	{"purple", "\e[1;35m"},
-	{"cyan"  , "\e[1;36m"},
 	{"white" , "\e[1;37m"},
 };
 
@@ -17,7 +16,7 @@ void rpg::clear() { std::cout << "\e[H\e[2J"; }
 
 int rpg::rate(int range) {
 	srand(time(NULL));
-	return rand() % range;
+	return rand() % range + 1;
 }
 
 void rpg::hud_player(int choice) {
@@ -48,10 +47,10 @@ void rpg::battle(rpg::Enemies emy) {
 	int drate;
 
 	auto attack_per = [&drate, &action, &damage] (auto* x, auto* y, int m) {
-		bool mana = (m == 0 || x->mp() == 0);
-		drate = rpg::rate(x->dmg_rate()) + 1;
+		bool magic = (m == 0 || x->mp() == 0);
+		drate = rpg::rate(x->dmg_rate());
 
-		if (mana) 
+		if (magic) 
 			drate /= 2;
 		else
 			x->mp(x->mp() - 10);
@@ -59,15 +58,16 @@ void rpg::battle(rpg::Enemies emy) {
 		y->hp(y->hp() - drate);
 
 		if (drate >= x->dmg_rate())
-			action = x->name() + ": " + color["red"] + "*Critic*" + color["reset"] + (!mana ? " (mana)" : "");
+			action = x->name() + ": " + color["red"] + "*Critic*" + color["reset"];
 		else
-			action = x->name() + ": Attack" + (!mana ? " (mana)" : "");
+			action = x->name() + ": " + color["blue"] + "Attack" + color["reset"];
 	
-		damage = color["purple"] + "-" + std::to_string(drate);
+		damage = color["purple"] + (drate == 0 ? "*fail*" : ("-" + std::to_string(drate))); 
+		damage += (!magic ? " (Magic)" : "");
 	};
 
 	auto print_battle = [&emy, &action, &damage] (int slp) {
-		clear();
+		rpg::clear();
 		rpg::hud_player(0);
 
 		std::cout << "\n" << action << "\n";
@@ -80,17 +80,17 @@ void rpg::battle(rpg::Enemies emy) {
 
 	while(1) {
 		if (emy.hp() == 0) {
-			++win_lose.first; // player win
+			++rpg::win_lose.first; // player win
 			rpg::player.xp(rpg::player.xp() + emy.xp());
 			return;
 		} else if (player.hp() == 0) {
-			++win_lose.second; // player lose
+			++rpg::win_lose.second; // player lose
 			return;
 		}
 
 		print_battle(0);
 
-		std::cout << "\nActions\n[1] Attack, [2] Mana Attack, [0] Flee\n> ";
+		std::cout << "\nActions\n[1] Attack, [2] Magic Attack, [0] Flee\n> ";
 		std::cin >> aws;
 
 		if (aws == "1") {
@@ -100,7 +100,7 @@ void rpg::battle(rpg::Enemies emy) {
 			attack_per(&player, &emy, 1); // player round
 			print_battle(1);
 		} else if (aws == "0" || aws == "q") {
-			++win_lose.second; // player lose
+			++rpg::win_lose.second; // player lose
 			return;
 		}
 

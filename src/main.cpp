@@ -23,7 +23,7 @@ int main() {
 			int aws_int;
 			rpg::clear();
 			for (int i = 0; i < rpg::enemy.size(); ++i)
-				std::cout << "[" << i << "] " << rpg::enemy[i].name() << "\n";
+				std::cout << rpg::color["green"] << "[" << i << "] " << rpg::color["reset"] << rpg::enemy[i].name() << "\n";
 			
 			std::cout << "\nActions\nChoose an Enemy\n> ";
 			if(std::cin >> aws_int)

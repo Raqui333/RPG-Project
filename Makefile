@@ -12,5 +12,5 @@ rpg: $(OBJ)
 .PHONY: clean
 
 clean:
-	rm src/*.o 2> /dev/null
-	rm rpg 2> /dev/null
+	@rm src/*.o 2> /dev/null
+	@rm rpg 2> /dev/null
