@@ -1,5 +1,5 @@
 # Rpg Project
-default compiler is clang (clang++), you can easy change it in Makefile; change the variable CXX with your compiler</br>
+default compiler is clang (clang++), you can easily change it in Makefile; change the variable CXX with your compiler</br>
 e.g</br>
 CXX = g++</br>
 
