@@ -1,4 +1,7 @@
 # Rpg Project
+default compiler is clang (clang++), you can easy change it in Makefile; change the variable CXX with your compiler</br>
+e.g</br>
+CXX = g++</br>
 
 ## Damage Rate Algorithm
 the damage rate is calculated based by Enemy Hp divided by 10</br>
