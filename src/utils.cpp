@@ -13,8 +13,6 @@ std::map<std::string, std::string> rpg::color {
 	{"white" , "\e[1;37m"},
 };
 
-std::pair<int, int> rpg::win_lose(0, 0);
-
 void rpg::clear() { std::cout << "\e[H\e[2J"; }
 
 int rpg::rate(int range) {
@@ -31,7 +29,7 @@ void rpg::hud_player(int choice) {
 	} else {
 		std::cout << rpg::color["yellow"] << "Class ..: " << rpg::color["reset"] << rpg::player.type() << "\n";
 		std::cout << rpg::color["yellow"] << "Name ...: " << rpg::color["reset"] << rpg::player.name();
-		std::cout << " (" << rpg::win_lose.first << "/" << rpg::win_lose.second << ")\n";
+		std::cout << " (" << rpg::player.win() << "/" << rpg::player.lose() << ")\n";
 		std::cout << rpg::color["yellow"] << "Level ..: " << rpg::color["reset"] << rpg::player.lv() << " [";
 		std::cout << rpg::player.xp() << "/" << rpg::player.xp_lvl() << "]\n";
 		std::cout << rpg::color["yellow"] << "Status .: " << rpg::color["reset"] << "HP " << rpg::player.hp() << ", ";
@@ -83,11 +81,11 @@ void rpg::battle(rpg::Enemies emy) {
 
 	while(1) {
 		if (emy.hp() == 0) {
-			++rpg::win_lose.first; // player win
+			rpg::player.win_add();
 			rpg::player.xp(rpg::player.xp() + emy.xp()); // emy.xp()
 			return;
 		} else if (player.hp() == 0) {
-			++rpg::win_lose.second; // player lose
+			rpg::player.lose_add();
 			return;
 		}
 
@@ -103,7 +101,7 @@ void rpg::battle(rpg::Enemies emy) {
 			attack_per(&player, &emy, 1); // player round
 			print_battle(1);
 		} else if (aws == "0" || aws == "q") {
-			++rpg::win_lose.second; // player lose
+			rpg::player.lose_add();
 			return;
 		}
 
@@ -116,7 +114,7 @@ std::map<int, std::string> types {
 	{2 , "Noob"},
 	{5 , "Knight"},
 	{10, "Champion"},
-	{15, "Dragon Slayer"}
+	{15, "Dragon Slayer"},
 	{20, "Dragon Lord"},
 	{25, "Demon Slayer"},
 	{30, "Demon Lord"},
@@ -134,4 +132,18 @@ void rpg::level_up() {
 	for (auto it : types)
 		if (rpg::player.lv() == it.first)
 			rpg::player.type(it.second);
+}
+
+void rpg::save_game() {
+	std::ofstream save("save.bin", std::ios::binary);
+	save.write((char*)&rpg::player, sizeof(rpg::player));
+	save.close();
+}
+
+void rpg::load_game() {
+	std::ifstream player_data("save.bin", std::ios::binary);
+	if (!player_data.fail()) {
+		player_data.read((char*)&rpg::player, sizeof(player_data));
+		player_data.close();
+	}
 }

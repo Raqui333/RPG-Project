@@ -9,6 +9,7 @@
 #include <iostream>
 #include <unistd.h>
 #include <vector>
+#include <fstream>
 
 namespace rpg {
 	class Enemies {
@@ -34,12 +35,17 @@ namespace rpg {
 		private:
 			std::string name_t;
 			std::string type_t;
+			std::pair<int, int> win_lose;
 			std::pair<int, int> hp_t, mp_t;
 			std::pair<int, int> xp_t;
 			int lv_t;
 		public:
 			Player(std::string);
 			int dmg_rate();
+
+			// win/lose
+			int win(), lose();
+			void win_add(), lose_add();
 
 			// name
 			std::string name();
@@ -71,11 +77,10 @@ namespace rpg {
 	void battle(Enemies);
 	void level_up();
 	void clear();
+	void save_game();
+	void load_game();
 
 	extern std::map<std::string, std::string> color;
-	extern std::pair<int, int> win_lose;
-
-	// player
 	extern Player player;
 }
 

@@ -21,6 +21,7 @@ void rpg::Enemies::mp(int new_mp) { mp_t.first = new_mp; }
 rpg::Player::Player(std::string x) {
 	name_t = x;
 	type_t = "none";
+	win_lose = std::make_pair(0, 0);
 	hp_t = std::make_pair(100, 100);
 	mp_t = std::make_pair(100, 100);
 	xp_t = std::make_pair(0  , 100);
@@ -31,6 +32,11 @@ int rpg::Player::dmg_rate() { return hp_t.second / 10; }
 
 std::string rpg::Player::name() { return name_t; }
 void rpg::Player::name(std::string new_name) { name_t = new_name; }
+
+int rpg::Player::win() { return win_lose.first; }
+int rpg::Player::lose() { return win_lose.second; }
+void rpg::Player::win_add() { ++win_lose.first; }
+void rpg::Player::lose_add() { ++win_lose.second; } 
 
 std::string rpg::Player::type() { return type_t; }
 void rpg::Player::type(std::string new_type) { type_t = new_type; }

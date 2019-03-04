@@ -2,10 +2,11 @@
 #include "../include/enemies.h"
 
 int main(int argc, char **argv) {
+	rpg::load_game();
+	std::string aws;
+
 	if (argc > 1)
 		rpg::player.name(argv[1]);
-
-	std::string aws;
 
 	while(1) {
 		if (rpg::player.xp() >= rpg::player.xp_lvl())
@@ -37,9 +38,10 @@ int main(int argc, char **argv) {
 			std::cin.clear();
 			std::cin.ignore();
 		} else if (aws == "0" || aws == "q") {
-			exit(0);
+			break;
 		}
 	}
 
+	rpg::save_game();
 	return 0;
 }
