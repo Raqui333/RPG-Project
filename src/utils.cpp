@@ -113,8 +113,15 @@ void rpg::battle(rpg::Enemies emy) {
 }
 
 std::map<int, std::string> types {
-	{2, "Noob"},
-	{3, "Master"},
+	{2 , "Noob"},
+	{5 , "Knight"},
+	{10, "Champion"},
+	{15, "Dragon Slayer"}
+	{20, "Dragon Lord"},
+	{25, "Demon Slayer"},
+	{30, "Demon Lord"},
+	{40, "God Slayer"},
+	{50, "God"},
 };
 
 void rpg::level_up() {
