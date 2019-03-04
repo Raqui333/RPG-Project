@@ -81,7 +81,7 @@ void rpg::battle(rpg::Enemies emy) {
 	while(1) {
 		if (emy.hp() == 0) {
 			++win_lose.first; // player win
-			rpg::player.xp(rpg::player.xp() + 100);
+			rpg::player.xp(rpg::player.xp() + emy.xp());
 			return;
 		} else if (player.hp() == 0) {
 			++win_lose.second; // player lose
