@@ -1,6 +1,6 @@
 #include "../include/enemies.h"
 
-rpg::Enemies rpg::raqui333("?????", 999999, 999999);
+rpg::Enemies rpg::raqui333("??????", 999999, 999999);
 
 typedef rpg::Enemies add;
 

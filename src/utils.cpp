@@ -39,8 +39,14 @@ void rpg::hud_player(int choice) {
 
 void rpg::hud_enemy(rpg::Enemies emy) {
 	std::cout << color["red"] << emy.name() << color["reset"] << "  |  ";
-	std::cout << color["green"] << "HP: " << emy.hp() << color["reset"] << ", ";
-	std::cout << color["blue"] << "MP: " << emy.mp() << color["reset"] << "\n";
+
+	if (emy.name() == "??????") {
+		std::cout << color["green"] << "HP: " << emy.name() << color["reset"] << ", ";
+		std::cout << color["blue"] << "MP: " << emy.name() << color["reset"] << "\n";
+	} else {
+		std::cout << color["green"] << "HP: " << emy.hp() << color["reset"] << ", ";
+		std::cout << color["blue"] << "MP: " << emy.mp() << color["reset"] << "\n";
+	}
 }
 
 void rpg::battle(rpg::Enemies emy) {
