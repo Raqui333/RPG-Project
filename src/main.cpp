@@ -1,13 +1,14 @@
 #include "../include/rpg.h"
 #include "../include/enemies.h"
 
-rpg::Player rpg::player("Raqui", "Knight");
+int main(int argc, char **argv) {
+	if (argc > 1)
+		rpg::player.name(argv[1]);
 
-int main() {
 	std::string aws;
 
 	while(1) {
-		if (rpg::player.xp() == rpg::player.xp_lvl())
+		if (rpg::player.xp() >= rpg::player.xp_lvl())
 			rpg::level_up();
 
 		rpg::player.hp(rpg::player.hp_max());
@@ -26,9 +27,12 @@ int main() {
 				std::cout << rpg::color["green"] << "[" << i << "] " << rpg::color["reset"] << rpg::enemy[i].name() << "\n";
 			
 			std::cout << "\nActions\nChoose an Enemy\n> ";
-			if(std::cin >> aws_int)
-				if (aws_int <= rpg::enemy.size())
+			if(std::cin >> aws_int) {
+				if (aws_int < rpg::enemy.size())
 					rpg::battle(rpg::enemy[aws_int]);
+				else if (aws_int == 999)
+					rpg::battle(rpg::raqui333);
+			}
 		
 			std::cin.clear();
 			std::cin.ignore();

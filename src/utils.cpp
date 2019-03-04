@@ -1,5 +1,8 @@
 #include "../include/rpg.h"
 
+// player
+rpg::Player rpg::player("Player");
+
 std::map<std::string, std::string> rpg::color {
 	{"reset" , "\e[00m"  },
 	{"red"   , "\e[1;31m"},
@@ -81,7 +84,7 @@ void rpg::battle(rpg::Enemies emy) {
 	while(1) {
 		if (emy.hp() == 0) {
 			++rpg::win_lose.first; // player win
-			rpg::player.xp(rpg::player.xp() + emy.xp());
+			rpg::player.xp(rpg::player.xp() + emy.xp()); // emy.xp()
 			return;
 		} else if (player.hp() == 0) {
 			++rpg::win_lose.second; // player lose
@@ -109,10 +112,19 @@ void rpg::battle(rpg::Enemies emy) {
 	}
 }
 
+std::map<int, std::string> types {
+	{2, "Noob"},
+	{3, "Master"},
+};
+
 void rpg::level_up() {
 	rpg::player.xp(0);
 	rpg::player.lv(rpg::player.lv() + 1);
 	rpg::player.hp_max(rpg::player.hp_max() + 100);
 	rpg::player.mp_max(rpg::player.mp_max() + 100);
 	rpg::player.xp_lvl(rpg::player.xp_lvl() + 100);
+
+	for (auto it : types)
+		if (rpg::player.lv() == it.first)
+			rpg::player.type(it.second);
 }

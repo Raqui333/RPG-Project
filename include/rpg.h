@@ -38,10 +38,16 @@ namespace rpg {
 			std::pair<int, int> xp_t;
 			int lv_t;
 		public:
-			Player(std::string, std::string);
-			std::string name();
-			std::string type();
+			Player(std::string);
 			int dmg_rate();
+
+			// name
+			std::string name();
+			void name(std::string);
+
+			// type
+			std::string type();
+			void type(std::string);
 
 			// level
 			int lv();

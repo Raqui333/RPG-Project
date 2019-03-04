@@ -18,18 +18,22 @@ int rpg::Enemies::mp() { return mp_t.first <= 0 ? 0 : mp_t.first; }
 void rpg::Enemies::mp(int new_mp) { mp_t.first = new_mp; }
 
 // Player Class
-rpg::Player::Player(std::string x, std::string y) {
+rpg::Player::Player(std::string x) {
 	name_t = x;
-	type_t = y;
+	type_t = "none";
 	hp_t = std::make_pair(100, 100);
 	mp_t = std::make_pair(100, 100);
 	xp_t = std::make_pair(0  , 100);
 	lv_t = 1;
 }
 
-std::string rpg::Player::name() { return name_t; }
-std::string rpg::Player::type() { return type_t; }
 int rpg::Player::dmg_rate() { return hp_t.second / 10; }
+
+std::string rpg::Player::name() { return name_t; }
+void rpg::Player::name(std::string new_name) { name_t = new_name; }
+
+std::string rpg::Player::type() { return type_t; }
+void rpg::Player::type(std::string new_type) { type_t = new_type; }
 
 int rpg::Player::lv() { return lv_t; }
 void rpg::Player::lv(int new_lv) { lv_t = new_lv; }
