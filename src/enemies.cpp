@@ -10,6 +10,9 @@ add rpg::skeleton("Skeleton", 150, 150);
 add rpg::vampire("Vampire", 300, 200);
 add rpg::dark_wolf("Dark Wolf", 350, 200);
 add rpg::goblin_champion("Goblin Champion", 400, 400);
+add rpg::mage("Black Mage", 500, 1000);
+add rpg::minotaur("Minotaur", 600, 200);
+add rpg::knight("Black Knight", 900, 900);
 add rpg::dragon("Dragon", 1000, 1000);
 add rpg::demon_lord("Demon Lord", 10000, 20000);
 
@@ -20,6 +23,9 @@ std::vector<rpg::Enemies> rpg::enemy {
 	rpg::vampire,
 	rpg::dark_wolf,
 	rpg::goblin_champion,
+	rpg::mage,
+	rpg::minotaur,
+	rpg::knight,
 	rpg::dragon,
 	rpg::demon_lord,
 };

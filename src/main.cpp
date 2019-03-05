@@ -3,12 +3,12 @@
 
 int main(int argc, char **argv) {
 	rpg::load_game();
-	std::string aws;
+	int aws, loop = 1;
 
 	if (argc > 1)
 		rpg::player.name(argv[1]);
 
-	while(1) {
+	while(loop == 1) {
 		if (rpg::player.xp() >= rpg::player.xp_lvl())
 			rpg::level_up();
 
@@ -18,28 +18,34 @@ int main(int argc, char **argv) {
 		rpg::clear();
 		rpg::hud_player(1);
 
-		std::cout << "\nActions\n[1] Battle, [0] Exit\n> ";
-		std::cin >> aws;
+		std::cout << "\nActions\n[1] Battle, [2] Save, [0] Exit\n> ";
+		if(std::cin >> aws) {
+			switch (aws) {
+				case 1:
+					rpg::clear();
+					for (int i = 0; i < rpg::enemy.size(); ++i)
+						std::cout << rpg::color["green"] << "[" << i << "] " << rpg::color["reset"] << rpg::enemy[i].name() << "\n";
 
-		if(aws == "1") {
-			int aws_int;
-			rpg::clear();
-			for (int i = 0; i < rpg::enemy.size(); ++i)
-				std::cout << rpg::color["green"] << "[" << i << "] " << rpg::color["reset"] << rpg::enemy[i].name() << "\n";
-			
-			std::cout << "\nActions\nChoose an Enemy\n> ";
-			if(std::cin >> aws_int) {
-				if (aws_int < rpg::enemy.size())
-					rpg::battle(rpg::enemy[aws_int]);
-				else if (aws_int == 999)
-					rpg::battle(rpg::raqui333);
+					std::cout << "\nActions\nChoose an Enemy\n> ";
+					if(std::cin >> aws) {
+						if (aws < rpg::enemy.size())
+							rpg::battle(rpg::enemy[aws]);
+						else if (aws == 999)
+							rpg::battle(rpg::raqui333);
+					}
+
+					break;
+				case 2:
+					rpg::save_game();
+					break;
+				case 0:
+					loop = -1;
+					break;
 			}
-		
-			std::cin.clear();
-			std::cin.ignore();
-		} else if (aws == "0" || aws == "q") {
-			break;
 		}
+
+		std::cin.clear();
+		std::cin.ignore();
 	}
 
 	rpg::save_game();
