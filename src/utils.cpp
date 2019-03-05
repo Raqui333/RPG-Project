@@ -54,16 +54,16 @@ void rpg::battle(rpg::Enemies emy) {
 	int drate, aws, loop = 1;
 
 	auto attack_per = [&drate, &action, &damage] (auto* x, auto* y, int m) {
-		bool magic = (m == 0 || x->mp() == 0);
+		bool is_magic = (m != 0 && x->mp() >= 10);
 		drate = rpg::rate(x->dmg_rate());
 
-		if (magic) { 
-			drate /= 2;
-		} else if (!magic && m == 3 && x->mp() >= 50) {
+		if (is_magic && m == 3 && x->mp() >= 50) {
 			drate *= 2;
 			x->mp(x->mp() - 50);
-		} else {
+		} else if (is_magic) {
 			x->mp(x->mp() - 10);
+		} else {
+			drate /= 2;
 		}
 
 		y->hp(y->hp() - drate);
@@ -71,11 +71,11 @@ void rpg::battle(rpg::Enemies emy) {
 		if (drate >= x->dmg_rate())
 			action = x->name() + ": " + color["red"] + "*Critic*" + color["reset"];
 		else
-			action = x->name() + ": " + color["blue"] + "Melee" + color["reset"];
+			action = x->name() + ": " + color["blue"] + "Attack" + color["reset"];
 	
 		damage = color["purple"] + (drate == 0 ? "*fail*" : ("-" + std::to_string(drate))); 
-		damage += (!magic && m == 0 ? " (Magic)" : "");
-		damage += (!magic && m == 3 ? " (Fire)" : "");
+		damage += (is_magic && m == 0 ? " (Magic)" : "");
+		damage += (is_magic && m == 3 ? " (Fire)" : "");
 	};
 
 	auto print_battle = [&emy, &action, &damage] (int slp) {
@@ -91,31 +91,6 @@ void rpg::battle(rpg::Enemies emy) {
 	};
 
 	while(loop == 1) {
-		print_battle(0);
-		std::cout << "\nActions\n[1] Melee, [2] Magic, [3] Fire, [0] Flee\n> ";
-		if (std::cin >> aws) {
-			switch (aws) {
-				case 1:
-					attack_per(&player, &emy, 0); // player round
-					print_battle(1);
-					break;
-				case 2:
-					attack_per(&player, &emy, aws); // player round
-					print_battle(1);
-					break;
-				case 3:
-					attack_per(&player, &emy, aws); // player round
-					print_battle(1);
-					break;
-				case 0:
-					loop = -1;
-					break;
-			}
-		}
-
-		attack_per(&emy, &player, 1); // enemy round
-		print_battle(1);
-
 		if (emy.hp() == 0) {
 			rpg::player.win_add();
 			rpg::player.xp(rpg::player.xp() + emy.xp()); // emy.xp()
@@ -127,6 +102,21 @@ void rpg::battle(rpg::Enemies emy) {
 
 		std::cin.clear();
 		std::cin.ignore();
+
+		print_battle(0);
+		std::cout << "\nActions\n[1] Melee, [2] Magic, [3] Fire, [0] Flee\n> ";
+		
+		if (std::cin >> aws) {
+			switch (aws) { // player round
+				case 1: attack_per(&player, &emy, 0); break;
+				case 2: attack_per(&player, &emy, 2); break;
+				case 3: attack_per(&player, &emy, 3); break;
+				case 0: loop = -1; break;
+			} print_battle(1);
+		}
+
+		attack_per(&emy, &player, 1); // enemy round
+		print_battle(1);
 	}
 }
 
