@@ -3,12 +3,13 @@
 
 int main(int argc, char **argv) {
 	rpg::load_game();
-	int aws, loop = 1;
+	int aws;
+	bool loop = true;
 
 	if (argc > 1)
 		rpg::player.name(argv[1]);
 
-	while(loop == 1) {
+	while(loop) {
 		if (rpg::player.xp() >= rpg::player.xp_lvl())
 			rpg::level_up();
 
@@ -36,7 +37,7 @@ int main(int argc, char **argv) {
 						} 
 						break;
 				case 2: rpg::save_game(); break;
-				case 0: loop = -1; break;
+				case 0: loop = false; break;
 			}
 		}
 

@@ -51,19 +51,19 @@ void rpg::hud_enemy(rpg::Enemies emy) {
 
 void rpg::battle(rpg::Enemies emy) {
 	std::string action = "VS", damage;
-	int drate, aws, loop = 1;
+	bool loop = true;
+	int drate, aws;
 
 	auto attack_per = [&drate, &action, &damage] (auto* x, auto* y, int m) {
 		bool is_magic = (m != 0 && x->mp() >= 10);
 		drate = rpg::rate(x->dmg_rate());
 
-		if (is_magic && m == 3 && x->mp() >= 50) {
+		if (is_magic && m == 2 && x->mp() >= 50) {
 			drate *= 2;
 			x->mp(x->mp() - 50);
-		} else if (is_magic) {
-			x->mp(x->mp() - 10);
-		} else {
-			drate /= 2;
+		} else if (is_magic && m == 3 && x->mp() >= 100) {
+			drate *= 3;
+			x->mp(x->mp() - 100);
 		}
 
 		y->hp(y->hp() - drate);
@@ -74,7 +74,7 @@ void rpg::battle(rpg::Enemies emy) {
 			action = x->name() + ": " + color["blue"] + "Attack" + color["reset"];
 	
 		damage = color["purple"] + (drate == 0 ? "*fail*" : ("-" + std::to_string(drate))); 
-		damage += (is_magic && m == 0 ? " (Magic)" : "");
+		damage += (is_magic && m == 2 ? " (Magic)" : "");
 		damage += (is_magic && m == 3 ? " (Fire)" : "");
 	};
 
@@ -90,7 +90,7 @@ void rpg::battle(rpg::Enemies emy) {
 		sleep(slp);
 	};
 
-	while(loop == 1) {
+	while(loop) {
 		if (emy.hp() == 0) {
 			rpg::player.win_add();
 			rpg::player.xp(rpg::player.xp() + emy.xp()); // emy.xp()
@@ -111,11 +111,11 @@ void rpg::battle(rpg::Enemies emy) {
 				case 1: attack_per(&player, &emy, 0); break;
 				case 2: attack_per(&player, &emy, 2); break;
 				case 3: attack_per(&player, &emy, 3); break;
-				case 0: loop = -1; break;
+				case 0: rpg::player.lose_add(); loop = false; break;
 			} print_battle(1);
 		}
 
-		attack_per(&emy, &player, 1); // enemy round
+		attack_per(&emy, &player, rpg::rate(3)); // enemy round
 		print_battle(1);
 	}
 }
@@ -137,7 +137,7 @@ void rpg::level_up() {
 	rpg::player.lv(rpg::player.lv() + 1);
 	rpg::player.hp_max(rpg::player.hp_max() + 100);
 	rpg::player.mp_max(rpg::player.mp_max() + 100);
-	rpg::player.xp_lvl(rpg::player.xp_lvl() + 100);
+	rpg::player.xp_lvl(rpg::player.xp_lvl() *   2);
 
 	for (auto it : types)
 		if (rpg::player.lv() == it.first)

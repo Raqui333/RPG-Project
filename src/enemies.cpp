@@ -14,6 +14,9 @@ add rpg::mage("Black Mage", 500, 1000);
 add rpg::minotaur("Minotaur", 600, 200);
 add rpg::knight("Black Knight", 900, 900);
 add rpg::dragon("Dragon", 1000, 1000);
+add rpg::demon("Demon", 1100, 2100);
+add rpg::dead_knight("Dead Knight", 1200, 1200);
+add rpg::ghoul("Ghoul", 1300, 1000);
 add rpg::demon_lord("Demon Lord", 10000, 20000);
 
 std::vector<rpg::Enemies> rpg::enemy {
@@ -27,5 +30,8 @@ std::vector<rpg::Enemies> rpg::enemy {
 	rpg::minotaur,
 	rpg::knight,
 	rpg::dragon,
+	rpg::demon,
+	rpg::dead_knight,
+	rpg::ghoul,
 	rpg::demon_lord,
 };

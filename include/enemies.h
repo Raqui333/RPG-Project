@@ -17,6 +17,9 @@ namespace rpg {
 	extern Enemies mage;
 	extern Enemies minotaur;
 	extern Enemies knight;
+	extern Enemies demon;
+	extern Enemies dead_knight;
+	extern Enemies ghoul;
 
 	extern std::vector<Enemies> enemy;
 }
