@@ -55,13 +55,12 @@ void rpg::battle(rpg::Enemies emy) {
 	int drate, aws;
 
 	auto attack_per = [&drate, &action, &damage] (auto* x, auto* y, int m) {
-		bool is_magic = (m != 0 && x->mp() >= 10);
 		drate = rpg::rate(x->dmg_rate());
 
-		if (is_magic && m == 2 && x->mp() >= 50) {
+		if (m == 2 && x->mp() >= 50) {
 			drate *= 2;
 			x->mp(x->mp() - 50);
-		} else if (is_magic && m == 3 && x->mp() >= 100) {
+		} else if (m == 3 && x->mp() >= 100) {
 			drate *= 3;
 			x->mp(x->mp() - 100);
 		}
@@ -74,8 +73,8 @@ void rpg::battle(rpg::Enemies emy) {
 			action = x->name() + ": " + color["blue"] + "Attack" + color["reset"];
 	
 		damage = color["purple"] + (drate == 0 ? "*fail*" : ("-" + std::to_string(drate))); 
-		damage += (is_magic && m == 2 ? " (Magic)" : "");
-		damage += (is_magic && m == 3 ? " (Fire)" : "");
+		damage += (m == 2 && x->mp() >= 50  ? " (Magic)" : "");
+		damage += (m == 3 && x->mp() >= 100 ? " (Fire)"  : "");
 	};
 
 	auto print_battle = [&emy, &action, &damage] (int slp) {
