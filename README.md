@@ -19,6 +19,6 @@ Goblin 50HP 50MP  => 25xp</br>
 Wolf  100HP 100MP => 50xp</br>
 
 ## Attacks
-Melee => \<Damage Rate\> \/ 2</br>
-Magic => \<Damage Rate\></br>
-Fire  => \<Damage Rate\> * 2</br>
+Melee (-0MP) => \<Damage Rate\></br>
+Magic (-50MP) => \<Damage Rate\> * 2</br>
+Fire  (-100MP) => \<Damage Rate\> * 3</br>
