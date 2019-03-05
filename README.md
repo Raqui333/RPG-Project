@@ -1,6 +1,6 @@
 # Rpg Project
 default compiler is clang (clang++), you can easily change it in Makefile; change the variable CXX with your compiler</br>
-e.g</br></br>
+e.g</br>
 ```
 CXX = g++
 ```
