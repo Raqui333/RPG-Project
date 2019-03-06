@@ -52,17 +52,20 @@ void rpg::hud_enemy(rpg::Enemies emy) {
 void rpg::battle(rpg::Enemies emy) {
 	std::string action = "VS", damage;
 	bool loop = true;
-	int drate, aws;
+	int aws;
 
-	auto attack_per = [&drate, &action, &damage] (auto* x, auto* y, int m) {
-		drate = rpg::rate(x->dmg_rate());
+	auto attack_per = [&action, &damage] (auto* x, auto* y, int m) {
+		int drate = rpg::rate(x->dmg_rate());
+		damage = color["purple"];
 
 		if (m == 2 && x->mp() >= 50) {
 			drate *= 2;
-			x->mp(x->mp() - 50);
+			x->mp(x->mp() - 50); 
+			damage += "(Magic) ";
 		} else if (m == 3 && x->mp() >= 100) {
 			drate *= 3;
 			x->mp(x->mp() - 100);
+			damage += "(Fire) ";
 		}
 
 		y->hp(y->hp() - drate);
@@ -71,10 +74,8 @@ void rpg::battle(rpg::Enemies emy) {
 			action = x->name() + ": " + color["red"] + "*Critic*" + color["reset"];
 		else
 			action = x->name() + ": " + color["blue"] + "Attack" + color["reset"];
-	
-		damage = color["purple"] + (drate == 0 ? "*fail*" : ("-" + std::to_string(drate))); 
-		damage += (m == 2 && x->mp() >= 50  ? " (Magic)" : "");
-		damage += (m == 3 && x->mp() >= 100 ? " (Fire)"  : "");
+		
+		damage += drate == 0 ? "*fail*" : ("-" + std::to_string(drate));
 	};
 
 	auto print_battle = [&emy, &action, &damage] (int slp) {
@@ -132,7 +133,7 @@ std::map<int, std::string> types {
 };
 
 void rpg::level_up() {
-	rpg::player.xp(0);
+	rpg::player.xp(rpg::player.xp() - rpg::player.xp_lvl());
 	rpg::player.lv(rpg::player.lv() + 1);
 	rpg::player.hp_max(rpg::player.hp_max() + 100);
 	rpg::player.mp_max(rpg::player.mp_max() + 100);
