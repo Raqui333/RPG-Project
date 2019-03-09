@@ -34,12 +34,12 @@ void rpg::hud_player(int choice) {
 		std::cout << rpg::player.xp() << "/" << rpg::player.xp_lvl() << "]\n";
 		std::cout << rpg::color["yellow"] << "Status .: " << rpg::color["reset"] << "HP " << rpg::player.hp() << ", ";
 		std::cout << "MP " << rpg::player.mp() << "\n";
+		std::cout << rpg::color["yellow"] << "Money ..: " << rpg::color["reset"] << rpg::player.money() << "\n";
 	}
 }
 
 void rpg::hud_enemy(rpg::Enemies emy) {
 	std::cout << color["red"] << emy.name() << color["reset"] << "  |  ";
-
 	if (emy.name() == "??????") {
 		std::cout << color["green"] << "HP: " << emy.name() << color["reset"] << ", ";
 		std::cout << color["blue"] << "MP: " << emy.name() << color["reset"] << "\n";
@@ -94,9 +94,11 @@ void rpg::battle(rpg::Enemies emy) {
 		if (emy.hp() == 0) {
 			rpg::player.win_add();
 			rpg::player.xp(rpg::player.xp() + emy.xp()); // emy.xp()
+			rpg::player.money(rpg::player.money() + rpg::rate(emy.money()));
 			return;
 		} else if (player.hp() == 0) {
 			rpg::player.lose_add();
+			rpg::player.money(rpg::player.money() - rpg::rate(emy.money()));
 			return;
 		}
 
@@ -144,16 +146,16 @@ void rpg::level_up() {
 			rpg::player.type(it.second);
 }
 
-void rpg::save_game() {
-	std::ofstream save("save.bin", std::ios::binary);
-	save.write((char*)&rpg::player, sizeof(rpg::player));
-	save.close();
+void rpg::save_game(rpg::Player& obj) {
+	std::ofstream ofile("save");
+	ofile << obj;
+	ofile.close();
 }
 
-void rpg::load_game() {
-	std::ifstream player_data("save.bin", std::ios::binary);
-	if (!player_data.fail()) {
-		player_data.read((char*)&rpg::player, sizeof(player_data));
-		player_data.close();
+void rpg::load_game(rpg::Player& obj) {
+	std::ifstream ifile("save");
+	if (!ifile.fail()) {
+		ifile >> obj;
+		ifile.close();
 	}
 }

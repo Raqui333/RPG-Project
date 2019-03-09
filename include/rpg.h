@@ -20,7 +20,7 @@ namespace rpg {
 			Enemies(std::string, int, int);
 			std::string name();
 			int dmg_rate();
-			int xp();
+			int xp(), money();
 
 			// hp
 			int hp();
@@ -39,6 +39,8 @@ namespace rpg {
 			std::pair<int, int> hp_t, mp_t;
 			std::pair<int, int> xp_t;
 			int lv_t;
+			int money_t;
+			std::map<std::string, int> items_t;
 		public:
 			Player(std::string);
 			int dmg_rate();
@@ -69,6 +71,18 @@ namespace rpg {
 			// mp
 			int mp(), mp_max();
 			void mp(int), mp_max(int);
+
+			// money
+			int money();
+			void money(int);
+
+			// items
+			std::map<std::string, int> items();
+			void items(std::string, int);
+
+			// save & load
+			friend std::ostream& operator<<(std::ostream&, const Player&);
+			friend std::istream& operator>>(std::istream&, Player&);
 	};
 
 	int rate(int);
@@ -77,8 +91,8 @@ namespace rpg {
 	void battle(Enemies);
 	void level_up();
 	void clear();
-	void save_game();
-	void load_game();
+	void load_game(Player&);
+	void save_game(Player&);
 
 	extern std::map<std::string, std::string> color;
 	extern Player player;
