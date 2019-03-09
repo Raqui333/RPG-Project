@@ -2,9 +2,10 @@
 #include "../include/enemies.h"
 
 int main(int argc, char **argv) {
-	rpg::load_game();
 	int aws;
 	bool loop = true;
+
+	rpg::load_game(rpg::player);
 
 	if (argc > 1)
 		rpg::player.name(argv[1]);
@@ -19,7 +20,9 @@ int main(int argc, char **argv) {
 		rpg::clear();
 		rpg::hud_player(1);
 
-		std::cout << "\nActions\n[1] Battle, [2] Save, [0] Exit\n> ";
+		std::cout << "\nActions\n[1] Battle, [2] Save, [3] Shop\n";
+		std::cout << "[4] Items,  [0] Exit\n> ";
+		
 		if(std::cin >> aws) {
 			switch (aws) {
 				case 1:
@@ -35,9 +38,24 @@ int main(int argc, char **argv) {
 							rpg::battle(rpg::enemy[aws]);
 						else if (aws == 999)
 							rpg::battle(rpg::raqui333);
-					} 
+					}
 					break;
-				case 2: rpg::save_game(); break;
+				case 2: rpg::save_game(rpg::player); break;
+				case 3: std::cout << "Working\n"; std::cin.get(); break;
+				case 4:
+					{
+						int i = 0;
+						rpg::clear();
+						for (auto& x : rpg::player.items()) {
+							std::cout << rpg::color["green"];
+							std::cout << "[" << i << "]\e[00m ";
+							std::cout << x.first << " " << x.second << "x" << "\n";
+							++i;
+						}
+						std::cout << "\nPress [Enter] to exit\n";
+						std::cin.get();
+						break;
+					}
 				case 0: loop = false; break;
 			}
 		}
@@ -46,6 +64,6 @@ int main(int argc, char **argv) {
 		std::cin.ignore();
 	}
 
-	rpg::save_game();
+	rpg::save_game(rpg::player);
 	return 0;
 }
