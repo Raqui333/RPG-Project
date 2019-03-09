@@ -120,3 +120,4 @@ std::istream& rpg::operator>>(std::istream& in, rpg::Player& obj) {
 
 	return in;
 }
+
