@@ -5,7 +5,7 @@ rpg::Player::Player(std::string x) {
 	type_t = "none";
 	hp_t = std::make_pair(100, 100);
 	mp_t = std::make_pair(100, 100);
-	xp_t = std::make_pair(1  , 100);
+	xp_t = std::make_pair(0  , 100);
 	lv_t = 1;
 	money_t = 0;
 
@@ -84,8 +84,8 @@ std::ostream& rpg::operator<<(std::ostream& out, const rpg::Player& obj) {
 	out << obj.lv_t << "\n";
 	out << obj.money_t << "\n";
 
-	for (auto& x : obj.items_t)
-		write_pair(x);
+	for (auto& item : obj.items_t)
+		write_pair(item);
 
 	return out;
 }
@@ -97,9 +97,9 @@ std::istream& rpg::operator>>(std::istream& in, rpg::Player& obj) {
 	};
 
 	auto load_map = [&in] (std::map<std::string, int> &the_map) {
-		std::string first;
-		int second;
-		while(in >> first) {
+		std::string first; int second;
+		for (int i = 0; i < the_map.size(); ++i) {
+			in >> first;
 			in >> second;
 			the_map[first] = second;
 		}
@@ -121,3 +121,30 @@ std::istream& rpg::operator>>(std::istream& in, rpg::Player& obj) {
 	return in;
 }
 
+std::map<int, std::string> types {
+	{2 , "Noob"},
+	{5 , "Knight"},
+	{10, "Champion"},
+	{15, "Dragon Slayer"},
+	{20, "Dragon Lord"},
+	{25, "Demon Slayer"},
+	{30, "Demon Lord"},
+	{40, "God Slayer"},
+	{50, "God"},
+};
+
+rpg::Player& rpg::operator++(rpg::Player& obj) {
+	obj.hp_t.second += 100;
+	obj.mp_t.second += 100;
+	
+	obj.xp_t.first -= obj.xp_t.second;
+	obj.xp_t.second *= 2;
+	
+	++obj.lv_t;
+
+	for (auto& it : types)
+		if (obj.lv_t == it.first)
+			obj.type_t = it.second;
+
+	return obj;
+}
