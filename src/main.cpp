@@ -12,7 +12,7 @@ int main(int argc, char **argv) {
 
 	while(loop) {
 		if (rpg::player.xp() >= rpg::player.xp_lvl())
-			rpg::level_up();
+			++rpg::player;
 
 		rpg::player.hp(rpg::player.hp_max());
 		rpg::player.mp(rpg::player.mp_max());
