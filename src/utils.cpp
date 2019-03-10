@@ -80,12 +80,12 @@ void rpg::battle(rpg::Enemies emy) {
 
 	auto print_battle = [&emy, &action, &damage] (int slp) {
 		rpg::clear();
-		rpg::hud_player(0);
+		rpg::hud_enemy(emy);
 
 		std::cout << "\n" << action << "\n";
 		std::cout << damage << "\n\n";
 
-		rpg::hud_enemy(emy);
+		rpg::hud_player(0);
 
 		sleep(slp);
 	};
@@ -106,7 +106,7 @@ void rpg::battle(rpg::Enemies emy) {
 		std::cin.ignore();
 
 		print_battle(0);
-		std::cout << "\nActions\n[1] Melee, [2] Magic, [3] Fire, [0] Flee\n> ";
+		std::cout << "[1] Melee, [2] Magic, [3] Fire, [0] Flee\n> ";
 		
 		if (std::cin >> aws) {
 			switch (aws) { // player round
@@ -120,30 +120,6 @@ void rpg::battle(rpg::Enemies emy) {
 		attack_per(&emy, &player, rpg::rate(3)); // enemy round
 		print_battle(1);
 	}
-}
-
-std::map<int, std::string> types {
-	{2 , "Noob"},
-	{5 , "Knight"},
-	{10, "Champion"},
-	{15, "Dragon Slayer"},
-	{20, "Dragon Lord"},
-	{25, "Demon Slayer"},
-	{30, "Demon Lord"},
-	{40, "God Slayer"},
-	{50, "God"},
-};
-
-void rpg::level_up() {
-	rpg::player.xp(rpg::player.xp() - rpg::player.xp_lvl());
-	rpg::player.lv(rpg::player.lv() + 1);
-	rpg::player.hp_max(rpg::player.hp_max() + 100);
-	rpg::player.mp_max(rpg::player.mp_max() + 100);
-	rpg::player.xp_lvl(rpg::player.xp_lvl() *   2);
-
-	for (auto it : types)
-		if (rpg::player.lv() == it.first)
-			rpg::player.type(it.second);
 }
 
 void rpg::save_game(rpg::Player& obj) {
