@@ -83,6 +83,9 @@ namespace rpg {
 			// save & load
 			friend std::ostream& operator<<(std::ostream&, const Player&);
 			friend std::istream& operator>>(std::istream&, Player&);
+
+			// level up
+			friend Player& operator++(Player&);
 	};
 
 	int rate(int);
