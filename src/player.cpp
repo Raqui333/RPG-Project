@@ -138,7 +138,7 @@ rpg::Player& rpg::operator++(rpg::Player& obj) {
 	obj.mp_t.second += 100;
 	
 	obj.xp_t.first -= obj.xp_t.second;
-	obj.xp_t.second += 100;
+	obj.xp_t.second += 500;
 	
 	++obj.lv_t;
 
